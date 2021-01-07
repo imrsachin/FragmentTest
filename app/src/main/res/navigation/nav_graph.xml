@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_detail_to_checkout"
             app:destination="@id/checkout" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/checkout"
@@ -33,6 +36,9 @@
             app:destination="@id/thanks"
             app:popUpTo="@id/detail"
             app:popUpToInclusive="false" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/thanks"
