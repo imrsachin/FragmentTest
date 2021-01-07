@@ -27,33 +27,33 @@ class CheckoutFragment : Fragment() {
 
         val args = CheckoutFragmentArgs.fromBundle(requireArguments())
         val factory = CheckOutViewModelFactory(args.id)
-        val viewModel:CheckOutViewModel by viewModels(factoryProducer = {factory})
+        val viewModel: CheckOutViewModel by viewModels(factoryProducer = { factory })
         val product = viewModel.product
+        product.observe(viewLifecycleOwner) {
+            setData(binding,it)
+        }
 
-        product?.let {
-            with(it) {
-                binding.price.text = getString(R.string.product_price, price)
-                binding.quantity.text = viewModel.qty.toString()
-                binding.orderTotal.text =
-                    getString(R.string.order_total,price* viewModel.qty )
-                binding.image.setImageResource(imageId)
+        binding.incQty.setOnClickListener {
+            viewModel.addQty()
+        }
+        binding.reduceQty.setOnClickListener {
+            viewModel.reduceQty()
+        }
 
-                binding.checkout.setOnClickListener {
-                    findNavController().navigate(CheckoutFragmentDirections.actionCheckoutToThanks())
-                }
+        viewModel.qty.observe(viewLifecycleOwner){
+            binding.quantity.text = it.toString()
+//            binding.orderTotal.text =
+//                getString(R.string.order_total, price * viewModel.qty)
+        }
+    }
 
-                binding.incQty.setOnClickListener {
-                    viewModel.addQty()
-                    binding.quantity.text = viewModel.qty.toString()
-                    binding.orderTotal.text =
-                        getString(R.string.order_total,price* viewModel.qty )
-                }
-                binding.reduceQty.setOnClickListener {
-                    viewModel.reduceQty()
-                    binding.quantity.text = viewModel.qty.toString()
-                    binding.orderTotal.text =
-                        getString(R.string.order_total,price* viewModel.qty )
-                }
+    fun setData(binding: FragmentCheckoutBinding,product: Product){
+        with(product){
+            binding.price.text = getString(R.string.product_price, price)
+            binding.image.setImageResource(imageId)
+
+            binding.checkout.setOnClickListener {
+                findNavController().navigate(CheckoutFragmentDirections.actionCheckoutToThanks())
             }
         }
     }
