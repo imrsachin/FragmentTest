@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.onlinehowtodo.fragmenttest.databinding.FragmentCheckoutBinding
 
@@ -23,21 +24,35 @@ class CheckoutFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var product: Product? = null
+
         val args = CheckoutFragmentArgs.fromBundle(requireArguments())
-        product = products.find { it.id == args.id }
-        Log.d("checkoutfrag", "onViewCreated:${args.id} $product")
+        val factory = CheckOutViewModelFactory(args.id)
+        val viewModel:CheckOutViewModel by viewModels(factoryProducer = {factory})
+        val product = viewModel.product
 
         product?.let {
             with(it) {
                 binding.price.text = getString(R.string.product_price, price)
-                binding.quantity.text = 1.toString()
+                binding.quantity.text = viewModel.qty.toString()
                 binding.orderTotal.text =
-                    getString(R.string.order_total,price )
+                    getString(R.string.order_total,price* viewModel.qty )
                 binding.image.setImageResource(imageId)
 
                 binding.checkout.setOnClickListener {
                     findNavController().navigate(CheckoutFragmentDirections.actionCheckoutToThanks())
+                }
+
+                binding.incQty.setOnClickListener {
+                    viewModel.addQty()
+                    binding.quantity.text = viewModel.qty.toString()
+                    binding.orderTotal.text =
+                        getString(R.string.order_total,price* viewModel.qty )
+                }
+                binding.reduceQty.setOnClickListener {
+                    viewModel.reduceQty()
+                    binding.quantity.text = viewModel.qty.toString()
+                    binding.orderTotal.text =
+                        getString(R.string.order_total,price* viewModel.qty )
                 }
             }
         }
