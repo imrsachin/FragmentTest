@@ -24,22 +24,10 @@ class ThanksFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var product: Product? = null
-        val id = arguments?.getInt("ID")
-        id?.let {
-            product = products.find { it.id == id }
-        }
-
-        product?.let {
-
-            with(it) {
-                view.findViewById<TextView>(R.id.message).text =
-                    getString(R.string.thank_you_message, this.name)
-                view.findViewById<Button>(R.id.continue_shopping).setOnClickListener {
-                    findNavController().navigate(ThanksFragmentDirections.actionThanksToHome())
-                }
-            }
+        view.findViewById<TextView>(R.id.message).text =
+            getString(R.string.thank_you_message)
+        view.findViewById<Button>(R.id.continue_shopping).setOnClickListener {
+            findNavController().navigate(ThanksFragmentDirections.actionThanksToHome())
         }
     }
-
 }

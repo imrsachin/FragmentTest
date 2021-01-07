@@ -38,7 +38,7 @@ class DetailFragment : Fragment() {
                 binding.fullDescription.text = it.longDescription
                 binding.include.image.setImageResource(it.imageId)
 
-                binding.buy.setOnClickListener {
+                binding.buy.setOnClickListener {v->
 //                    val bundle = Bundle()
 //                    bundle.putInt("ID", it.id)
                     findNavController().navigate(DetailFragmentDirections.actionDetailToCheckout(it.id))

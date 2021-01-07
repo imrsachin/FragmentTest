@@ -2,6 +2,7 @@ package com.onlinehowtodo.fragmenttest
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,27 +18,26 @@ class CheckoutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = FragmentCheckoutBinding.inflate(inflater)
-        return view.root
+        binding = FragmentCheckoutBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var product: Product? = null
         val args = CheckoutFragmentArgs.fromBundle(requireArguments())
         product = products.find { it.id == args.id }
+        Log.d("checkoutfrag", "onViewCreated:${args.id} $product")
 
         product?.let {
             with(it) {
                 binding.price.text = getString(R.string.product_price, price)
-                val qty = binding.quantity
+                binding.quantity.text = 1.toString()
                 binding.orderTotal.text =
-                    getString(R.string.order_total, price.times(qty.toString().toInt()))
+                    getString(R.string.order_total,price )
                 binding.image.setImageResource(imageId)
 
                 binding.checkout.setOnClickListener {
-                    val bundle = Bundle()
-                    bundle.putInt("ID", this.id)
-                    findNavController().navigate(R.id.action_checkout_to_thanks, bundle)
+                    findNavController().navigate(CheckoutFragmentDirections.actionCheckoutToThanks())
                 }
             }
         }
