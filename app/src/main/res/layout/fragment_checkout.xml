@@ -84,10 +84,9 @@
         android:id="@+id/reduce_qty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
         android:text="-"
-        app:layout_constraintStart_toStartOf="@+id/quantity"
-        app:layout_constraintTop_toBottomOf="@+id/quantity" />
+        app:layout_constraintStart_toStartOf="@+id/longDesc"
+        app:layout_constraintTop_toBottomOf="@+id/longDesc" />
 
     <Button
         android:id="@+id/inc_qty"
@@ -97,4 +96,13 @@
         android:text="+"
         app:layout_constraintStart_toEndOf="@+id/reduce_qty"
         app:layout_constraintTop_toTopOf="@+id/reduce_qty" />
+
+    <TextView
+        android:id="@+id/longDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/quantity"
+        app:layout_constraintStart_toStartOf="@+id/quantity"
+        app:layout_constraintTop_toBottomOf="@+id/quantity" />
 </androidx.constraintlayout.widget.ConstraintLayout>
