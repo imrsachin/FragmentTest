@@ -30,7 +30,7 @@ class CheckoutFragment : Fragment() {
         val viewModel: CheckOutViewModel by viewModels(factoryProducer = { factory })
         val product = viewModel.product
         product.observe(viewLifecycleOwner) {
-            setData(binding,it)
+            setData(binding, it)
         }
 
         binding.incQty.setOnClickListener {
@@ -39,16 +39,22 @@ class CheckoutFragment : Fragment() {
         binding.reduceQty.setOnClickListener {
             viewModel.reduceQty()
         }
+        viewModel.trimDesc.observe(viewLifecycleOwner) {
+            binding.longDesc.text = it
+        }
+        viewModel.productPrice.observe(viewLifecycleOwner) {
+            binding.orderTotal.text =
+                getString(R.string.order_total, it)
+        }
 
-        viewModel.qty.observe(viewLifecycleOwner){
+        viewModel.qty.observe(viewLifecycleOwner) {
             binding.quantity.text = it.toString()
-//            binding.orderTotal.text =
-//                getString(R.string.order_total, price * viewModel.qty)
+
         }
     }
 
-    fun setData(binding: FragmentCheckoutBinding,product: Product){
-        with(product){
+    private fun setData(binding: FragmentCheckoutBinding, product: Product) {
+        with(product) {
             binding.price.text = getString(R.string.product_price, price)
             binding.image.setImageResource(imageId)
 
